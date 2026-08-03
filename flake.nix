@@ -19,9 +19,10 @@
             # алгоритмической части, которая разрабатывается на Linux.
             pkgs.dotnet-sdk_8
 
-            # Служебные разборы дампов: пересчитать связи, найти дубли,
-            # проверить диапазоны. Быстрее, чем поднимать ради этого базу.
-            pkgs.python3
+            # Заливка дампов (infra/load-dumps.py) и служебные разборы:
+            # пересчитать связи, найти дубли, проверить диапазоны.
+            # oracledb в thin-режиме — чистый Python, Instant Client не нужен.
+            (pkgs.python3.withPackages (ps: [ ps.oracledb ]))
           ];
 
           # Пакет ставит SDK в share/dotnet; без явного DOTNET_ROOT дочерние
@@ -33,7 +34,7 @@
           shellHook = ''
             echo "dotnet $(dotnet --version)"
             echo "Oracle:  podman compose -f infra/compose.yaml up -d"
-            echo "дампы:   ./infra/load-dumps.sh"
+            echo "дампы:   ./infra/load-dumps.py"
           '';
         };
       });
