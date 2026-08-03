@@ -1,0 +1,56 @@
+# --- .NET ---
+bin/
+obj/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+artifacts/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.vs/
+
+# --- NuGet ---
+*.nupkg
+packages/
+project.lock.json
+project.assets.json
+
+# --- IDE ---
+.idea/
+.vscode/
+*.userprefs
+
+# --- AutoCAD ---
+*.dwl
+*.dwl2
+*.bak
+*.sv$
+*.ac$
+*.err
+
+# --- LibreOffice / MS Office ---
+.~lock.*#
+~$*
+
+# --- Nix ---
+result
+result-*
+.direnv/
+
+# --- Oracle / инфраструктура ---
+infra/oracle-data/
+
+# --- Локальные заметки ---
+CLAUDE.md
+
+# --- Локальные настройки и секреты ---
+.env
+*.local.json
+appsettings.Development.json
+
+# --- OS ---
+.DS_Store
+Thumbs.db
