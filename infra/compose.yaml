@@ -1,0 +1,34 @@
+# Локальная Oracle XE для разработки.
+#
+# Образ gvenzl, а не официальный container-registry.oracle.com: последний
+# требует логина в реестр и принятия лицензии интерактивно.
+# Вариант -faststart содержит уже созданную базу и поднимается за минуту
+# вместо десятка.
+#
+# Постоянного хранилища намеренно нет. База целиком восстанавливается из
+# дампов скриптом load-dumps.sh за считанные секунды, а bind-mount поверх
+# /opt/oracle/oradata у faststart-образа конфликтует с предсозданной базой.
+# Поэтому: `stop`/`start` сохраняют данные, `down` сбрасывает всё начисто.
+
+services:
+  oracle:
+    image: docker.io/gvenzl/oracle-xe:21-slim-faststart
+    container_name: task-oracle
+    ports:
+      # Из гостевой Windows-ВМ база видна как 192.168.122.1:1521.
+      - "1521:1521"
+    environment:
+      # Локальная база для разработки, пароли не являются секретом.
+      # Переопределяются через .env (см. .env.example).
+      ORACLE_PASSWORD: ${ORACLE_PASSWORD:-oracle}
+      APP_USER: ${APP_USER:-TASK}
+      APP_USER_PASSWORD: ${APP_USER_PASSWORD:-task}
+      # Обязательно. В PARAM есть PROBA_NUM = 'р112' с кириллической
+      # буквой — на однобайтовой кодировке значение потеряется.
+      ORACLE_CHARACTERSET: AL32UTF8
+    healthcheck:
+      test: ["CMD", "healthcheck.sh"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 20s

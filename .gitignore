@@ -41,7 +41,7 @@ result-*
 .direnv/
 
 # --- Oracle / инфраструктура ---
-infra/oracle-data/
+infra/.env
 
 # --- Локальные заметки ---
 CLAUDE.md
